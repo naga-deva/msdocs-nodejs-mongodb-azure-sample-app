@@ -1,0 +1,4203 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "ClickiLink API",
+    "contact": {
+      "name": "Vigneswari K"
+    },
+    "title": "ClickiLink API API",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000/hub/hubusers",
+      "description": "Local Dev Server"
+    }
+  ],
+  "paths": {
+    "/api/app/auth/signup": {
+      "post": {
+        "summary": "Create a user profile",
+        "operationId": "userSignup",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/default_success_response"
+                },
+                "examples": {
+                  "example-2": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Success",
+                      "displayMessage": "Signup Successfully",
+                      "messageCode": "SIGNUP_SUCCESS",
+                      "error": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/default_error_response"
+                }
+              }
+            }
+          }
+        },
+        "description": "2.1. *Types of On-boarding*\n        1. Email Sign Up\n            1. user must confirm email for access. \n        2. Facebook Sign Up\n            1. Users are able to create an account that is connected to their Facebook account.\n            2. First Name, Last Name, and photo should be pulled from Facebook to streamline onboarding.\n        3. SMS Sign Up\n            1. User inputs name into the system\n            2. The user then inputs phone number for verification \n                1. Send Confirmation code\n            3. Verification code is sent to phone\n            4. Autofill passcode from the keyboard when entering the passcode sent via SMS (Only UI)\n            5. Confirmation returns the user to the account creation page (Only UI)\n                1. failure results in an error allowing the user to retype the code.\n                2. The user must be able to resend the code. \n                3. Rich content - Code can be clicked with predictive test\n        5. Google Sign up \n            1. Users are able to create an account that is connected to their Google account.\n    2. Onboarding Process \n        1. User adds Name and profile (UserName, Name, Tell us about yourself, hometown, Gender?)\n        2. User has Ability to use Geolocation when Onboarding\n        3. Enter an Address when Onboarding (If visible)\n        4. User can add Identity Tags when Onboarding\n        5. User can add Interest Tags when Onboarding (if visible)\n        6. User can upload a profile photo when Onboarding\n            1. or an avatar\n        7. User can add a phone number when Onboarding\n        8. User has the option to add who referred them when Onboarding (How about usertype?)\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/signup-request"
+              },
+              "examples": {
+                "Email": {
+                  "value": {
+                    "email": "test@yopmail.com",
+                    "password": "TEstg*123#",
+                    "signupType": "EMAIL"
+                  }
+                },
+                "phone": {
+                  "value": {
+                    "phone": "+91018233093",
+                    "signupType": "PHONE",
+                    "otphash": "string",
+                    "otp": "123456"
+                  }
+                },
+                "Linked Account": {
+                  "value": {
+                    "email": "yopmail123@yopmail.com",
+                    "password": "yopmail@123",
+                    "signupType": "EMAIL",
+                    "linkedAccountId": 200
+                  }
+                },
+                "Email Signup with Reffered By": {
+                  "value": {
+                    "email": "yopmail@yopmail.com",
+                    "password": "yopmail@123",
+                    "signupType": "EMAIL",
+                    "refferedBy": 101
+                  }
+                },
+                "Phone Signup with Reffered By": {
+                  "value": {
+                    "phone": "+919043318118",
+                    "signupType": "PHONE",
+                    "otphash": "string",
+                    "otp": "123456",
+                    "refferedBy": 101
+                  }
+                },
+                "Signup with Facebook": {
+                  "value": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbGQiOiJkZW1vMXNreWxhYkB5b3BtYWlsLmNvbSIsInVzZXJJZCI6MzYwMSwiYWNjb3VudElkIjo1MDAxLCJhcHBJZCI6MTIzLCJpYXQiOjE2NDcyNTYwMjV9.dDwrzk_qtxJYiUAyE3Wz-mdqQtVuxigtbPgu7t_EKq4",
+                    "signupType": "FACEBOOK"
+                  }
+                },
+                "Signup with Google": {
+                  "value": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbGQiOiJkZW1vMXNreWxhYkB5b3BtYWlsLmNvbSIsInVzZXJJZCI6MzYwMSwiYWNjb3VudElkIjo1MDAxLCJhcHBJZCI6MTIzLCJpYXQiOjE2NDcyNTYwMjV9.dDwrzk_qtxJYiUAyE3Wz-mdqQtVuxigtbPgu7t_EKq4",
+                    "signupType": "GOOGLE",
+                    "appType": "WEB"
+                  }
+                },
+                "Signup with Apple": {
+                  "value": {
+                    "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbGQiOiJkZW1vMXNreWxhYkB5b3BtYWlsLmNvbSIsInVzZXJJZCI6MzYwMSwiYWNjb3VudElkIjo1MDAxLCJhcHBJZCI6MTIzLCJpYXQiOjE2NDcyNTYwMjV9.dDwrzk_qtxJYiUAyE3Wz-mdqQtVuxigtbPgu7t_EKq4",
+                    "signupType": "APPLE",
+                    "appType": "WEB"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "number",
+              "example": 123
+            },
+            "in": "header",
+            "name": "appid",
+            "required": true,
+            "description": "Application Id"
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/api/app/auth/email/verification": {
+      "post": {
+        "summary": "Email verification",
+        "operationId": "emailVerify",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/default_success_response"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Success",
+                      "displayMessage": "Token Verified",
+                      "messageCode": "TOKEN_VERIFIED",
+                      "error": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/default_error_response"
+                }
+              }
+            }
+          }
+        },
+        "description": "To verify the user profile email id",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth_email_verify_request"
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "emailId": "seenuvasan.muthaiyan@yopmailhitech.com",
+                    "otp": "string",
+                    "otphash": "string"
+                  }
+                }
+              }
+            }
+          },
+          "description": ""
+        },
+        "tags": [
+          "Authentication"
+        ],
+        "parameters": [
+          {
+            "schema": {
+              "type": "number",
+              "example": 123
+            },
+            "in": "header",
+            "name": "appid",
+            "description": "Application ID ",
+            "required": true
+          }
+        ]
+      },
+      "parameters": []
+    },
+    "/api/app/auth/email/login": {
+      "post": {
+        "operationId": "post-api-auth-email-login",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User Email Login",
+        "description": "1. Architectural Requirements \n    1. Login Options\n        1. Admin will set via CMS which login option will be available as the default\n            2. Email\n            ",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth_email_login_request"
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "emailId": "mkseenuvasan@gmail.com",
+                    "password": "mkseenu*123#",
+                    "device": "mobile"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/default_success_response"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Success",
+                      "displayMessage": "Login Successfully",
+                      "messageCode": "LOGIN_SUCCESS",
+                      "payload": {
+                        "token": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbGQiOiJzZWVudXZhc2FuLm11dGhhaXlhbkBhdWd1c3RhaGl0ZWNoLmNvbSIsImlhdCI6MTY0MjcwNDQ3Mn0.yDrmAxtecIy-hbGV3o7mk5IOe5yEJ6zWf8d2n_3CTMA"
+                      },
+                      "error": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/default_error_response"
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "schema": {
+              "type": "number",
+              "example": 123
+            },
+            "in": "header",
+            "name": "appid",
+            "description": "Application Id",
+            "required": true
+          }
+        ]
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "default_success_response": {
+        "type": "object",
+        "title": "Default Success Response Model",
+        "additionalProperties": false,
+        "example": {
+          "statusCode": 200,
+          "message": "Success",
+          "displayMessage": "OTP Sent Successfully",
+          "messageCode": "SEND_OTP_SUCCESS",
+          "payload": {
+            "otpHash": "$2b$13$/K1GIb7tF8QkjvLQ3GpfkO11RncmvDfw2O.iQttk0I5/6DFWctzqm"
+          },
+          "error": false
+        },
+        "description": "",
+        "x-examples": {},
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "This gives a whether the respose succeed or failed"
+          },
+          "messageCode": {
+            "description": "HTTP status code as per standard",
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "payload": {
+            "allOf": [
+              {}
+            ],
+            "type": "object"
+          },
+          "error": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "statusCode",
+          "messageCode",
+          "displayMessage"
+        ]
+      },
+      "create_profile_success_response": {
+        "type": "object",
+        "title": "Create Profile Success Response",
+        "additionalProperties": false,
+        "example": {
+          "statusCode": 200,
+          "message": "Success",
+          "displayMessage": "OTP Sent Successfully",
+          "messageCode": "SEND_OTP_SUCCESS",
+          "payload": {
+            "otpHash": "$2b$13$/K1GIb7tF8QkjvLQ3GpfkO11RncmvDfw2O.iQttk0I5/6DFWctzqm"
+          },
+          "error": false
+        },
+        "description": "",
+        "x-examples": {
+          "example-1": {
+            "statusCode": 200,
+            "message": "Success",
+            "displayMessage": "Profile Created Successfully !!",
+            "messageCode": "PROFILE_CREATED_SUCCESS",
+            "payload": {},
+            "error": false
+          }
+        },
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "This gives a whether the respose succeed or failed"
+          },
+          "messageCode": {
+            "description": "HTTP status code as per standard",
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "payload": {
+            "allOf": [
+              {}
+            ],
+            "type": "object"
+          },
+          "error": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "statusCode",
+          "messageCode",
+          "displayMessage"
+        ]
+      },
+      "get-Profile-Details-Success-Response": {
+        "type": "object",
+        "title": "Get Profile Details Success Response",
+        "additionalProperties": false,
+        "example": {
+          "statusCode": 200,
+          "message": "Success",
+          "displayMessage": "OTP Sent Successfully",
+          "messageCode": "SEND_OTP_SUCCESS",
+          "payload": {
+            "otpHash": "$2b$13$/K1GIb7tF8QkjvLQ3GpfkO11RncmvDfw2O.iQttk0I5/6DFWctzqm"
+          },
+          "error": false
+        },
+        "description": "",
+        "x-examples": {
+          "example-1": {
+            "statusCode": 200,
+            "message": "Success",
+            "displayMessage": "Profile Details Retrived Successfully !!",
+            "messageCode": "SUCCESS !!",
+            "payload": {},
+            "error": false
+          }
+        },
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "This gives a whether the respose succeed or failed"
+          },
+          "messageCode": {
+            "description": "HTTP status code as per standard",
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "payload": {
+            "allOf": [
+              {}
+            ],
+            "type": "object"
+          },
+          "error": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "statusCode",
+          "messageCode",
+          "displayMessage"
+        ]
+      },
+      "get_users_response": {
+        "type": "object",
+        "title": "Get users Success Response",
+        "additionalProperties": false,
+        "example": {
+          "statusCode": 200,
+          "message": "Success",
+          "displayMessage": "OTP Sent Successfully",
+          "messageCode": "SEND_OTP_SUCCESS",
+          "payload": {
+            "otpHash": "$2b$13$/K1GIb7tF8QkjvLQ3GpfkO11RncmvDfw2O.iQttk0I5/6DFWctzqm"
+          },
+          "error": false
+        },
+        "description": "",
+        "x-examples": {
+          "example-1": {
+            "statusCode": 200,
+            "message": "Success",
+            "displayMessage": "Users Retrived Successfully !!",
+            "messageCode": "SUCCESS !!",
+            "payload": [
+              {}
+            ],
+            "error": false
+          }
+        },
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "This gives a whether the respose succeed or failed"
+          },
+          "messageCode": {
+            "description": "HTTP status code as per standard",
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "payload": {
+            "allOf": [
+              {}
+            ],
+            "type": "object"
+          },
+          "error": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "statusCode",
+          "messageCode",
+          "displayMessage"
+        ]
+      },
+      "edit_profile_success_response": {
+        "type": "object",
+        "title": "Edit Profile Success Response",
+        "additionalProperties": false,
+        "example": {
+          "statusCode": 200,
+          "message": "Success",
+          "displayMessage": "OTP Sent Successfully",
+          "messageCode": "SEND_OTP_SUCCESS",
+          "payload": {
+            "otpHash": "$2b$13$/K1GIb7tF8QkjvLQ3GpfkO11RncmvDfw2O.iQttk0I5/6DFWctzqm"
+          },
+          "error": false
+        },
+        "description": "",
+        "x-examples": {
+          "example-1": {
+            "statusCode": 200,
+            "message": "Success",
+            "displayMessage": "Profile Updated Successfully !!",
+            "messageCode": "PROFILE_UPDATED_SUCCESS",
+            "payload": {},
+            "error": false
+          }
+        },
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "This gives a whether the respose succeed or failed"
+          },
+          "messageCode": {
+            "description": "HTTP status code as per standard",
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "payload": {
+            "allOf": [
+              {}
+            ],
+            "type": "object"
+          },
+          "error": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "statusCode",
+          "messageCode",
+          "displayMessage"
+        ]
+      },
+      "update-staus-response": {
+        "type": "object",
+        "title": "Update Status Response",
+        "additionalProperties": false,
+        "example": {
+          "statusCode": 200,
+          "message": "Success",
+          "displayMessage": "OTP Sent Successfully",
+          "messageCode": "SEND_OTP_SUCCESS",
+          "payload": {
+            "otpHash": "$2b$13$/K1GIb7tF8QkjvLQ3GpfkO11RncmvDfw2O.iQttk0I5/6DFWctzqm"
+          },
+          "error": false
+        },
+        "description": "",
+        "x-examples": {
+          "example-1": {
+            "statusCode": 200,
+            "message": "Success",
+            "displayMessage": "Status Updated Successfully",
+            "messageCode": "SUCCESS_UPDATED_SUCCESS",
+            "payload": {},
+            "error": false
+          }
+        },
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "This gives a whether the respose succeed or failed"
+          },
+          "messageCode": {
+            "description": "HTTP status code as per standard",
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "payload": {
+            "allOf": [
+              {}
+            ],
+            "type": "object"
+          },
+          "error": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "statusCode",
+          "messageCode",
+          "displayMessage"
+        ]
+      },
+      "account_stats_add_response": {
+        "type": "object",
+        "title": "Add Account stats Response",
+        "additionalProperties": false,
+        "example": {
+          "statusCode": 200,
+          "message": "Success",
+          "displayMessage": "OTP Sent Successfully",
+          "messageCode": "SEND_OTP_SUCCESS",
+          "payload": {
+            "otpHash": "$2b$13$/K1GIb7tF8QkjvLQ3GpfkO11RncmvDfw2O.iQttk0I5/6DFWctzqm"
+          },
+          "error": false
+        },
+        "description": "",
+        "x-examples": {
+          "example-1": {
+            "statusCode": 200,
+            "message": "Success",
+            "displayMessage": "Success!!",
+            "messageCode": "SUCCESS",
+            "payload": {},
+            "error": false
+          }
+        },
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "This gives a whether the respose succeed or failed"
+          },
+          "messageCode": {
+            "description": "HTTP status code as per standard",
+            "type": "string"
+          },
+          "message": {
+            "type": "string",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "payload": {
+            "allOf": [
+              {}
+            ],
+            "type": "object"
+          },
+          "error": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "statusCode",
+          "messageCode",
+          "displayMessage"
+        ]
+      },
+      "default_error_response": {
+        "type": "object",
+        "title": "Default Error Response Model",
+        "additionalProperties": false,
+        "x-examples": {
+          "example-1": {
+            "statusCode": 200,
+            "message": "Success",
+            "displayMessage": "OTP Sent Successfully",
+            "messageCode": "SEND_OTP_SUCCESS",
+            "payload": {
+              "otpHash": "$2b$13$/K1GIb7tF8QkjvLQ3GpfkO11RncmvDfw2O.iQttk0I5/6DFWctzqm"
+            },
+            "error": false
+          }
+        },
+        "properties": {
+          "statusCode": {
+            "description": "HTTP status code as per standard",
+            "type": "number"
+          },
+          "message": {
+            "type": "string",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "error": {
+            "type": "boolean"
+          },
+          "messageCode": {
+            "type": "string"
+          },
+          "payload": {
+            "allOf": []
+          }
+        },
+        "required": [
+          "statusCode",
+          "displayMessage",
+          "messageCode"
+        ]
+      },
+      "auth_email_login_request": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Login Request Model",
+        "x-examples": {
+          "example-1": {
+            "emailId": "mkseenuvasan@gmail.com",
+            "password": "mkseenu*123#",
+            "device": "mobile"
+          }
+        },
+        "properties": {
+          "emailId": {
+            "type": "string",
+            "description": "Email of the User",
+            "pattern": "^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$",
+            "example": "seenuvasan.muthaiyan@yopmailhitech.com"
+          },
+          "password": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 15,
+            "description": "Password of User",
+            "example": "mkseenu*123#"
+          },
+          "device": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "emailId",
+          "password"
+        ]
+      },
+      "auth_email_verify_request": {
+        "type": "object",
+        "title": "Email verify request",
+        "example": {
+          "emailId": "mkseenuvasan@gmail.com",
+          "otp": "123121",
+          "otphash": "string"
+        },
+        "additionalProperties": false,
+        "x-examples": {
+          "Email Verification with OTP": {
+            "emailId": "mkseenuvasan@gmail.com",
+            "otp": "232324",
+            "otphas": "string"
+          }
+        },
+        "description": "",
+        "properties": {
+          "emailId": {
+            "type": "string",
+            "description": "Email of the User",
+            "example": "seenuvasan.muthaiyan@yopmailhitech.com",
+            "pattern": "^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$"
+          },
+          "otp": {
+            "type": "string",
+            "description": "Token of User"
+          },
+          "otphash": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "emailId",
+          "otp",
+          "otphash"
+        ]
+      },
+      "user_validation_request": {
+        "title": "user_validation_request",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "fieldName": "string",
+            "fieldValue": "string"
+          }
+        },
+        "properties": {
+          "fieldName": {
+            "type": "string",
+            "default": "userHandle",
+            "description": "user handle field name (userHandle)"
+          },
+          "fieldValue": {
+            "type": "string",
+            "description": "userHandle value"
+          }
+        },
+        "required": [
+          "fieldName",
+          "fieldValue"
+        ]
+      },
+      "create-user-request": {
+        "title": "create-user-request",
+        "type": "object",
+        "description": "",
+        "x-examples": {
+          "example-1": {
+            "referredBy": "string",
+            "userType": "string",
+            "firstName": "mkseenu",
+            "lastName": "string",
+            "email": "seenuvasan.muthaiyan@yopmailhitech.com",
+            "password": "mkseenu*123#",
+            "phone": "+919043318118",
+            "handle": "@mkseenu",
+            "geoLocation": [
+              0,
+              0
+            ],
+            "signupType": "EMAIL",
+            "visibility": "PRIVATE",
+            "otphash": "string",
+            "otp": "123456",
+            "token": "string",
+            "notification": {
+              "likes": true,
+              "comments": true,
+              "chat": true,
+              "followers": true,
+              "friends": true,
+              "tagged": true,
+              "join": true
+            },
+            "profileImage": "string",
+            "description": "string",
+            "gender": "FEMALE",
+            "dob": "10-06-1988",
+            "hometown": "string",
+            "shortDescription": "string"
+          }
+        },
+        "properties": {
+          "referredBy": {
+            "type": "string"
+          },
+          "userType": {
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string",
+            "description": "user name",
+            "minLength": 3,
+            "maxLength": 50,
+            "example": "mkseenu"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "description": "user email ",
+            "pattern": "^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$",
+            "example": "seenuvasan.muthaiyan@yopmailhitech.com"
+          },
+          "password": {
+            "type": "string",
+            "pattern": "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",
+            "example": "mkseenu*123#"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+919043318118",
+            "description": "signup mobile number",
+            "pattern": "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]{10}$"
+          },
+          "handle": {
+            "type": "string",
+            "minLength": 4,
+            "maxLength": 15,
+            "example": "@mkseenu"
+          },
+          "geoLocation": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number"
+            }
+          },
+          "geoLocation - copy": {
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+              "type": "number"
+            }
+          },
+          "signupType": {
+            "type": "string",
+            "description": "singup option type like email or phone number ...",
+            "enum": [
+              "EMAIL",
+              "SMS",
+              "GOOGLE",
+              "APPLE",
+              "FACEBOOK"
+            ],
+            "example": "EMAIL"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PRIVATE",
+              "PUBLIC",
+              "SECRET"
+            ],
+            "example": "PRIVATE",
+            "default": "PRIVATE",
+            "description": "User account visibility status"
+          },
+          "otphash": {
+            "type": "string",
+            "description": "Hash value for the SMS signup "
+          },
+          "otp": {
+            "type": "string",
+            "description": "Mobile OTP",
+            "minLength": 6,
+            "maxLength": 6,
+            "example": "123456"
+          },
+          "token": {
+            "type": "string",
+            "description": "Social media verification token like google (Id Token),apple (Id Token), facebook (Access Token)"
+          },
+          "appType": {
+            "type": "string",
+            "description": "Social media application token for google and apple.",
+            "enum": [
+              "ANDROID",
+              "IOS",
+              "WEB"
+            ]
+          },
+          "notification": {
+            "type": "object",
+            "properties": {
+              "likes": {
+                "type": "boolean"
+              },
+              "comments": {
+                "type": "boolean"
+              },
+              "chat": {
+                "type": "boolean"
+              },
+              "followers": {
+                "type": "boolean"
+              },
+              "friends": {
+                "type": "boolean"
+              },
+              "tagged": {
+                "type": "boolean"
+              },
+              "join": {
+                "type": "boolean"
+              }
+            }
+          },
+          "profileImage": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "gender": {
+            "type": "string",
+            "enum": [
+              "FEMALE",
+              "MALE",
+              "TRANSGENDER"
+            ],
+            "example": "MALE"
+          },
+          "dob": {
+            "type": "string",
+            "example": "10-06-1988",
+            "pattern": "^(1[0-2]|0[1-9])-(3[01]|[12][0-9]|0[1-9])-[0-9]{4}$"
+          },
+          "hometown": {
+            "type": "string"
+          },
+          "shortDescription": {
+            "type": "string"
+          },
+          "image": {
+            "type": "string",
+            "description": "Base64 image value"
+          },
+          "imageType": {
+            "type": "string",
+            "description": "Image type like png,jpg"
+          }
+        },
+        "required": [
+          "firstName",
+          "signupType"
+        ]
+      },
+      "create-profile-request": {
+        "title": "create-profile-request",
+        "type": "object",
+        "description": "create-profile-request",
+        "x-examples": {
+          "example-1": {
+            "userName": "string",
+            "handle": "string",
+            "accountType": "PRIVATE",
+            "address": "string",
+            "profileImageUrl": "string",
+            "description": "string",
+            "profileBackgroundImage": "string",
+            "dob": "string",
+            "geoLocation": "string",
+            "shortDescription": "string",
+            "linkedAccountId": 0
+          }
+        },
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "handle": {
+            "type": "string"
+          },
+          "accountType": {
+            "type": "string",
+            "example": "DISCOVERABLE",
+            "enum": [
+              "PRIVATE",
+              "DISCOVERABLE"
+            ]
+          },
+          "address": {
+            "type": "string"
+          },
+          "profileImageUrl": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "profileBackgroundImage": {
+            "type": "string"
+          },
+          "dob": {
+            "type": "string"
+          },
+          "geoLocation": {
+            "type": "string"
+          },
+          "shortDescription": {
+            "type": "string"
+          },
+          "linkedAccountId": {
+            "type": "number"
+          },
+          "lat": {
+            "type": "string"
+          },
+          "long": {
+            "type": "string"
+          },
+          "": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "handle"
+        ]
+      },
+      "add-accountstats-request": {
+        "title": "add-accountstats-request",
+        "type": "object",
+        "description": "add-accountstats-request",
+        "x-examples": {
+          "example-1": {
+            "accountId": 0,
+            "metric": "string",
+            "value": "string",
+            "status": "ACTIVE",
+            "": "string"
+          }
+        },
+        "properties": {
+          "accountId": {
+            "type": "number"
+          },
+          "metric": {
+            "type": "string"
+          },
+          "value": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "PENDING",
+              "DEACTIVATED"
+            ],
+            "example": "ACTIVE"
+          }
+        }
+      },
+      "get-users-request": {
+        "title": "get-users-request",
+        "type": "object",
+        "description": "get-users-request",
+        "x-examples": {
+          "example-1": {
+            "searchtext": "string",
+            "userIds": [
+              0
+            ]
+          }
+        },
+        "x-extension-1": null,
+        "properties": {
+          "searchtext": {
+            "type": "string"
+          },
+          "accountIds": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "adduser-filter-request": {
+        "title": "adduser-filter-request",
+        "type": "object",
+        "description": "adduser-filter-request\n",
+        "x-examples": {
+          "example-1": {
+            "platform": "post_create",
+            "content": "Opens",
+            "timePeriod": 15,
+            "targeting": [
+              "Fencing",
+              "Olympics"
+            ],
+            "isVerified": false
+          },
+          "example-2": {
+            "platform": "string",
+            "content": "string",
+            "timePeriod": 0,
+            "targeting": [
+              "string"
+            ],
+            "isVerified": false
+          }
+        },
+        "x-extension-1": null,
+        "properties": {
+          "platform": {
+            "type": "string"
+          },
+          "content": {
+            "type": "string"
+          },
+          "timePeriod": {
+            "type": "number"
+          },
+          "targeting": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "isVerified": {
+            "type": "boolean",
+            "default": false
+          }
+        }
+      },
+      "edit-profile-request": {
+        "title": "edit-profile-request",
+        "type": "object",
+        "description": "edit-profile-request",
+        "x-examples": {
+          "example-1": {
+            "userName": "string",
+            "handle": "string",
+            "accountType": "PRIVATE",
+            "address": "string",
+            "profileImageUrl": "string",
+            "description": "string",
+            "profileBackgroundImage": "string",
+            "dob": "string",
+            "geoLocation": "string",
+            "shortDescription": "string"
+          }
+        },
+        "properties": {
+          "userName": {
+            "type": "string"
+          },
+          "handle": {
+            "type": "string"
+          },
+          "accountType": {
+            "type": "string",
+            "example": "DISCOVERABLE",
+            "enum": [
+              "PRIVATE",
+              "DISCOVERABLE"
+            ]
+          },
+          "address": {
+            "type": "string"
+          },
+          "profileImageUrl": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "profileBackgroundImage": {
+            "type": "string"
+          },
+          "dob": {
+            "type": "string"
+          },
+          "geoLocation": {
+            "type": "string"
+          },
+          "shortDescription": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "handle"
+        ]
+      },
+      "signup-request": {
+        "title": "create-signup-request",
+        "type": "object",
+        "description": "create-signup-request",
+        "x-examples": {
+          "example-1": {
+            "referredBy": "string",
+            "userType": "string",
+            "email": "seenuvasan.muthaiyan@yopmailhitech.com",
+            "password": "mkseenu*123#",
+            "phone": "+919043318118",
+            "signupType": "EMAIL",
+            "visibility": "PRIVATE",
+            "otphash": "string",
+            "otp": "123456",
+            "token": "string"
+          }
+        },
+        "properties": {
+          "referredBy": {
+            "type": "string"
+          },
+          "userType": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "description": "user email ",
+            "pattern": "^(([^<>()\\[\\]\\\\.,;:\\s@\"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@\"]+)*)|(\".+\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$",
+            "example": "seenuvasan.muthaiyan@yopmailhitech.com"
+          },
+          "password": {
+            "type": "string",
+            "pattern": "^(?=.*[A-Za-z])(?=.*\\d)(?=.*[@$!%*#?&])[A-Za-z\\d@$!%*#?&]{8,}$",
+            "example": "mkseenu*123#"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+919043318118",
+            "description": "signup mobile number",
+            "pattern": "^[+]*[(]{0,1}[0-9]{1,4}[)]{0,1}[-\\s\\./0-9]{10}$"
+          },
+          "signupType": {
+            "type": "string",
+            "description": "singup option type like email or phone number ...",
+            "enum": [
+              "EMAIL",
+              "GOOGLE",
+              "APPLE",
+              "FACEBOOK",
+              "PHONE"
+            ],
+            "example": "EMAIL"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": [
+              "PRIVATE",
+              "PUBLIC",
+              "SECRET"
+            ],
+            "example": "PRIVATE",
+            "default": "PRIVATE",
+            "description": "User account visibility status"
+          },
+          "otphash": {
+            "type": "string",
+            "description": "Hash value for the SMS signup "
+          },
+          "otp": {
+            "type": "string",
+            "description": "Mobile OTP",
+            "minLength": 6,
+            "maxLength": 6,
+            "example": "123456"
+          },
+          "token": {
+            "type": "string",
+            "description": "Social media verification token like google (Id Token),apple (Id Token), facebook (Access Token)"
+          },
+          "appType": {
+            "type": "string",
+            "description": "Social media application token for google and apple.",
+            "enum": [
+              "ANDROID",
+              "IOS",
+              "WEB"
+            ]
+          },
+          "notification": {
+            "type": "object",
+            "properties": {
+              "likes": {
+                "type": "boolean"
+              },
+              "comments": {
+                "type": "boolean"
+              },
+              "chat": {
+                "type": "boolean"
+              },
+              "followers": {
+                "type": "boolean"
+              },
+              "friends": {
+                "type": "boolean"
+              },
+              "tagged": {
+                "type": "boolean"
+              },
+              "join": {
+                "type": "boolean"
+              }
+            }
+          }
+        },
+        "required": [
+          "signupType"
+        ]
+      },
+      "update-status-request": {
+        "title": "update-status-request",
+        "type": "object",
+        "description": "update-status-request",
+        "x-examples": {
+          "example-1": {
+            "status": "string",
+            "accountIds": [
+              0
+            ]
+          }
+        },
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "accountIds": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "delete-user-request": {
+        "title": "delete-user-request",
+        "type": "object",
+        "description": "delete-user-request",
+        "x-examples": {
+          "example-1": {
+            "userId": 0,
+            "accountId": 0
+          }
+        },
+        "properties": {
+          "userId": {
+            "type": "number"
+          },
+          "accountId": {
+            "type": "number"
+          }
+        }
+      },
+      "hub_error_response": {
+        "title": "Default Error Response Model",
+        "type": "object",
+        "additionalProperties": false,
+        "x-examples": {
+          "example-1": {
+            "statusCode": 400,
+            "message": "Invalid request body",
+            "error": true
+          }
+        },
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "Status code for the error"
+          },
+          "message": {
+            "type": "string",
+            "description": "Error message"
+          },
+          "error": {
+            "type": "boolean",
+            "description": "Error is set to true"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "hub_success_response": {
+        "type": "object",
+        "title": "Default Success Response Model",
+        "additionalProperties": false,
+        "x-examples": {
+          "example-1": {
+            "statusCode": 200,
+            "message": "some message comes here",
+            "success": true
+          }
+        },
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "Status code of the response"
+          },
+          "message": {
+            "type": "string",
+            "description": "Success message"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Success true"
+          }
+        },
+        "required": [
+          "message"
+        ]
+      },
+      "onboarding_options_data": {
+        "title": "onboarding-response",
+        "type": "object",
+        "description": "",
+        "additionalProperties": false,
+        "x-examples": {
+          "example-1": {
+            "branding": {
+              "screens": {
+                "loading": {
+                  "url": "imageurl",
+                  "thumbnail": "image"
+                },
+                "landing": {
+                  "url": "imageurl",
+                  "thumbnail": "image"
+                },
+                "login": {
+                  "url": "imageurl",
+                  "thumbnail": "image"
+                }
+              },
+              "logos": {
+                "welcome": {
+                  "url": "imageurl",
+                  "thumbnail": "image"
+                },
+                "login": {
+                  "url": "imageurl",
+                  "thumbnail": "image"
+                }
+              },
+              "colors": {
+                "button": {
+                  "primary": "0000",
+                  "secondary": "0000"
+                },
+                "text": {
+                  "primary": "0000",
+                  "secondary": "0000"
+                }
+              }
+            },
+            "defaultTab": "Home",
+            "login": {
+              "defaultLogin": {
+                "facebook": true,
+                "google": true,
+                "sms": true,
+                "email": true,
+                "apple": true
+              },
+              "requiredLogin": {
+                "sms": true,
+                "email": true
+              },
+              "customLogin": {
+                "facebook": true
+              },
+              "additionalSetting": {
+                "location": true,
+                "referredBy": true
+              }
+            },
+            "enableAvatar": true,
+            "avatar": [
+              {
+                "avatarId": "av_001",
+                "imageUrl": "image1"
+              },
+              {
+                "avatarId": "av_008",
+                "imageUrl": "imageurl2"
+              }
+            ],
+            "autofollow": [
+              {
+                "userId": "u_006",
+                "profileImageUrl": "profileimage",
+                "firstName": "haaae",
+                "lastName": "piaaaa"
+              }
+            ],
+            "tutorial": {
+              "buttonColor": "0000",
+              "isEnable": true,
+              "images": [
+                {
+                  "imageId": "img_001",
+                  "imageUrl": "image1url",
+                  "sequenceNum": 1
+                },
+                {
+                  "imageId": "img_002",
+                  "imageUrl": "image1url",
+                  "sequenceNum": 2
+                },
+                {
+                  "imageId": "img_003",
+                  "imageUrl": "image1url",
+                  "sequenceNum": 3
+                }
+              ]
+            },
+            "policy": {
+              "content": "We want you to know exactly how our service works and why we need your details. Please check that agree to our terms and conditions."
+            }
+          }
+        },
+        "properties": {
+          "branding": {
+            "type": "object",
+            "description": "Branding details",
+            "properties": {
+              "screens": {
+                "type": "object",
+                "description": "screens",
+                "properties": {
+                  "loading": {
+                    "type": "object",
+                    "description": "Loading screen details",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Image url"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "Image thumbnail"
+                      }
+                    }
+                  },
+                  "landing": {
+                    "type": "object",
+                    "description": "Landing screen details",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Image url"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "Image thumbnail"
+                      }
+                    }
+                  },
+                  "login": {
+                    "type": "object",
+                    "description": "Login screen details",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Image url"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "Image thumbnail"
+                      }
+                    }
+                  }
+                }
+              },
+              "logos": {
+                "type": "object",
+                "description": "logos details for app",
+                "properties": {
+                  "welcome": {
+                    "type": "object",
+                    "description": "Welcome logo details",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Logo image url"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "Image thumbnail "
+                      }
+                    }
+                  },
+                  "login": {
+                    "type": "object",
+                    "description": "Login logo details",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Image url"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "Image thumbnail"
+                      }
+                    }
+                  }
+                }
+              },
+              "colors": {
+                "type": "object",
+                "properties": {
+                  "button": {
+                    "type": "object",
+                    "description": "Button color details",
+                    "properties": {
+                      "primary": {
+                        "type": "string",
+                        "description": "Primary color"
+                      },
+                      "secondary": {
+                        "type": "string",
+                        "description": "Secondary"
+                      }
+                    }
+                  },
+                  "text": {
+                    "type": "object",
+                    "description": "Text color details",
+                    "properties": {
+                      "primary": {
+                        "type": "string",
+                        "description": "Primary color"
+                      },
+                      "secondary": {
+                        "type": "string",
+                        "description": "Secondary color"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "defaultTab": {
+            "type": "string",
+            "description": "Default tab"
+          },
+          "login": {
+            "type": "object",
+            "description": "Login type",
+            "properties": {
+              "defaultLogin": {
+                "type": "object",
+                "properties": {
+                  "facebook": {
+                    "type": "boolean",
+                    "description": "Facebook login enable or disable"
+                  },
+                  "google": {
+                    "type": "boolean",
+                    "description": "Google login enable"
+                  },
+                  "sms": {
+                    "type": "boolean",
+                    "description": "Sms login enable or disable"
+                  },
+                  "email": {
+                    "type": "boolean",
+                    "description": "Email login enable or disable"
+                  },
+                  "apple": {
+                    "type": "boolean",
+                    "description": "Apple login enable or disable"
+                  }
+                }
+              },
+              "requiredLogin": {
+                "type": "object",
+                "properties": {
+                  "sms": {
+                    "type": "boolean",
+                    "description": "Sms login required or not"
+                  },
+                  "email": {
+                    "type": "boolean",
+                    "description": "Email login required or not"
+                  }
+                }
+              },
+              "customLogin": {
+                "type": "object",
+                "description": "Custom login",
+                "properties": {
+                  "facebook": {
+                    "type": "boolean",
+                    "description": "Facebook enable or disable"
+                  }
+                }
+              },
+              "additionalSetting": {
+                "type": "object",
+                "description": "Additional settings",
+                "properties": {
+                  "location": {
+                    "type": "boolean",
+                    "description": "Location"
+                  },
+                  "referredBy": {
+                    "type": "boolean",
+                    "description": "Who referred"
+                  }
+                }
+              }
+            }
+          },
+          "enableAvatar": {
+            "type": "boolean",
+            "description": "Enable avatar "
+          },
+          "avatar": {
+            "type": "array",
+            "description": "Avatar details of the app",
+            "items": {
+              "type": "object",
+              "properties": {
+                "avatarId": {
+                  "type": "string",
+                  "description": "Avatar Id "
+                },
+                "imageUrl": {
+                  "type": "string",
+                  "description": "Image url"
+                }
+              }
+            }
+          },
+          "tutorial": {
+            "description": "Tutorial details of the app",
+            "type": "object",
+            "properties": {
+              "buttonColor": {
+                "type": "string",
+                "description": "Button color"
+              },
+              "isEnable": {
+                "type": "boolean",
+                "description": "Enable or disable"
+              },
+              "images": {
+                "type": "array",
+                "description": "Tutorial images",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "imageId": {
+                      "type": "string",
+                      "description": "Image id "
+                    },
+                    "imageUrl": {
+                      "type": "string",
+                      "description": "Image url"
+                    },
+                    "sequenceNum": {
+                      "type": "number",
+                      "description": "Sequence num of the image"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "autofollow": {
+            "type": "array",
+            "description": "Auto followers details",
+            "items": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "type": "string",
+                  "description": "User id "
+                },
+                "profileImageUrl": {
+                  "type": "string",
+                  "description": "Profile image url"
+                },
+                "firstName": {
+                  "type": "string",
+                  "description": "First name of the user"
+                },
+                "lastName": {
+                  "type": "string",
+                  "description": "Last name of the user"
+                }
+              }
+            }
+          },
+          "policy": {
+            "type": "object",
+            "description": "Policy details ",
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "onboarding_update_data": {
+        "title": "onboarding-response",
+        "type": "object",
+        "description": "",
+        "additionalProperties": false,
+        "x-examples": {
+          "example-1": {
+            "branding": {
+              "screens": {
+                "loading": {
+                  "url": "imageurl",
+                  "thumbnail": "image"
+                },
+                "landing": {
+                  "url": "imageurl",
+                  "thumbnail": "image"
+                },
+                "login": {
+                  "url": "imageurl",
+                  "thumbnail": "image"
+                }
+              },
+              "logos": {
+                "welcome": {
+                  "url": "imageurl",
+                  "thumbnail": "image"
+                },
+                "login": {
+                  "url": "imageurl",
+                  "thumbnail": "image"
+                }
+              },
+              "colors": {
+                "button": {
+                  "primary": "0000",
+                  "secondary": "0000"
+                },
+                "text": {
+                  "primary": "0000",
+                  "secondary": "0000"
+                }
+              }
+            },
+            "defaultTab": "Home",
+            "login": {
+              "defaultLogin": {
+                "facebook": true,
+                "google": true,
+                "sms": true,
+                "email": true,
+                "apple": true
+              },
+              "requiredLogin": {
+                "sms": true,
+                "email": true
+              },
+              "customLogin": {
+                "facebook": true
+              },
+              "additionalSetting": {
+                "location": true,
+                "referredBy": true
+              }
+            },
+            "enableAvatar": true,
+            "tutorial": {
+              "buttonColor": "0000",
+              "isEnable": true,
+              "images": [
+                {
+                  "imageId": "img_001",
+                  "imageUrl": "image1url",
+                  "sequenceNum": 1
+                },
+                {
+                  "imageId": "img_002",
+                  "imageUrl": "image1url",
+                  "sequenceNum": 2
+                },
+                {
+                  "imageId": "img_003",
+                  "imageUrl": "image1url",
+                  "sequenceNum": 3
+                }
+              ]
+            },
+            "policy": {
+              "content": "We want you to know exactly how our service works and why we need your details. Please check that agree to our terms and conditions."
+            }
+          }
+        },
+        "properties": {
+          "branding": {
+            "type": "object",
+            "description": "Branding details",
+            "properties": {
+              "screens": {
+                "type": "object",
+                "properties": {
+                  "loading": {
+                    "type": "object",
+                    "description": "Loading screen details",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Image url"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "Image thumbnail"
+                      }
+                    }
+                  },
+                  "landing": {
+                    "type": "object",
+                    "description": "Landing screen details",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Image url"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "Image thumbnail"
+                      }
+                    }
+                  },
+                  "login": {
+                    "type": "object",
+                    "description": "Login screen details",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Image url"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "Image thumbnail"
+                      }
+                    }
+                  }
+                }
+              },
+              "logos": {
+                "type": "object",
+                "description": "logos details for app",
+                "properties": {
+                  "welcome": {
+                    "type": "object",
+                    "description": "Welcome logo details",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Logo image url"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "Image thumbnail "
+                      }
+                    }
+                  },
+                  "login": {
+                    "type": "object",
+                    "description": "Login logo details",
+                    "properties": {
+                      "url": {
+                        "type": "string",
+                        "description": "Image url"
+                      },
+                      "thumbnail": {
+                        "type": "string",
+                        "description": "Image thumbnail"
+                      }
+                    }
+                  }
+                }
+              },
+              "colors": {
+                "type": "object",
+                "description": "Colors ",
+                "properties": {
+                  "button": {
+                    "type": "object",
+                    "description": "Button color details",
+                    "properties": {
+                      "primary": {
+                        "type": "string",
+                        "description": "Primary color"
+                      },
+                      "secondary": {
+                        "type": "string",
+                        "description": "Secondary color"
+                      }
+                    }
+                  },
+                  "text": {
+                    "type": "object",
+                    "description": "Text color details",
+                    "properties": {
+                      "primary": {
+                        "type": "string",
+                        "description": "Primary color"
+                      },
+                      "secondary": {
+                        "type": "string",
+                        "description": "Secondary color"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "defaultTab": {
+            "type": "string",
+            "description": "Default tab"
+          },
+          "login": {
+            "type": "object",
+            "description": "Login options",
+            "properties": {
+              "defaultLogin": {
+                "type": "object",
+                "description": "Default login",
+                "properties": {
+                  "facebook": {
+                    "type": "boolean",
+                    "description": "Facebook login enable"
+                  },
+                  "google": {
+                    "type": "boolean",
+                    "description": "Google login enable"
+                  },
+                  "sms": {
+                    "type": "boolean"
+                  },
+                  "email": {
+                    "type": "boolean"
+                  },
+                  "apple": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "requiredLogin": {
+                "type": "object",
+                "properties": {
+                  "sms": {
+                    "type": "boolean",
+                    "description": "Google login enable or disable"
+                  },
+                  "email": {
+                    "type": "boolean"
+                  }
+                }
+              },
+              "customLogin": {
+                "type": "object",
+                "properties": {
+                  "facebook": {
+                    "type": "boolean",
+                    "description": "SMS login enable or disable"
+                  }
+                }
+              },
+              "additionalSetting": {
+                "type": "object",
+                "properties": {
+                  "location": {
+                    "type": "boolean",
+                    "description": "Email login enable or disable"
+                  },
+                  "referredBy": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          },
+          "enableAvatar": {
+            "type": "boolean"
+          },
+          "tutorial": {
+            "description": "Tutorial details of the app",
+            "type": "object",
+            "properties": {
+              "buttonColor": {
+                "type": "string"
+              },
+              "isEnable": {
+                "type": "boolean"
+              },
+              "images": {
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    {
+                      "properties": {
+                        "imageId": {
+                          "type": "string"
+                        },
+                        "imageUrl": {
+                          "type": "string"
+                        },
+                        "sequenceNum": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  ],
+                  "type": "object"
+                }
+              }
+            }
+          },
+          "policy": {
+            "type": "object",
+            "description": "Policy details ",
+            "properties": {
+              "content": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "onboarding_autofollow_update": {
+        "title": "onboarding-autofollow",
+        "type": "object",
+        "description": "",
+        "additionalProperties": false,
+        "x-examples": {
+          "example-1": {
+            "autofollow": [
+              {
+                "userId": "u_006",
+                "profileImageUrl": "profileimage",
+                "firstName": "haaae",
+                "lastName": "piaaaa"
+              }
+            ]
+          }
+        },
+        "properties": {
+          "autofollow": {
+            "type": "array",
+            "description": "Auto followers details",
+            "items": {
+              "anyOf": [
+                {
+                  "properties": {
+                    "userId": {
+                      "type": "string"
+                    },
+                    "profileImageUrl": {
+                      "type": "string"
+                    },
+                    "firstName": {
+                      "type": "string",
+                      "description": "First name of the user"
+                    },
+                    "lastName": {
+                      "type": "string",
+                      "description": "Last name of the user"
+                    }
+                  }
+                }
+              ],
+              "type": "object"
+            }
+          }
+        }
+      },
+      "onboarding_avatar_update": {
+        "title": "onboarding-avatar",
+        "description": "",
+        "x-examples": {
+          "example-1": {
+            "avatar": [
+              {
+                "avatarId": "string",
+                "imageUrl": "string"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "properties": {
+          "avatar": {
+            "type": "array",
+            "items": {
+              "anyOf": [
+                {
+                  "properties": {
+                    "avatarId": {
+                      "type": "string"
+                    },
+                    "imageUrl": {
+                      "type": "string"
+                    }
+                  }
+                }
+              ],
+              "type": "object"
+            }
+          }
+        }
+      },
+      "account_user_request": {
+        "title": "account_user_request",
+        "type": "object",
+        "additionalProperties": false,
+        "x-examples": {
+          "example-1": {
+            "email": "mark@gmail.com",
+            "name": "markin",
+            "profilePic": "image",
+            "location": "reerr",
+            "adminLevel": "Member",
+            "streaks": "111",
+            "verifyStatus": "verified",
+            "points": "566",
+            "tags": "455",
+            "flag": "78",
+            "accountUrl": "accounturlll"
+          }
+        },
+        "properties": {
+          "email": {
+            "type": "string",
+            "description": "Email address of the user"
+          },
+          "name": {
+            "type": "string",
+            "description": "First name of the user"
+          },
+          "profilePic": {
+            "type": "string",
+            "description": "Profile pic url"
+          },
+          "location": {
+            "type": "string",
+            "description": "Latitude and Longitude of the location"
+          },
+          "adminLevel": {
+            "type": "string",
+            "description": "Access level of user"
+          },
+          "streaks": {
+            "type": "string",
+            "description": "Streaks value"
+          },
+          "verifyStatus": {
+            "type": "string",
+            "description": "Verification status pending/verified"
+          },
+          "points": {
+            "type": "string",
+            "description": "Points "
+          },
+          "tags": {
+            "type": "string",
+            "description": "Tags information"
+          },
+          "flag": {
+            "type": "string",
+            "description": "Flag value"
+          },
+          "accountUrl": {
+            "type": "string",
+            "description": "Account url"
+          }
+        },
+        "required": [
+          "email",
+          "name",
+          "profilePic",
+          "location",
+          "adminLevel",
+          "streaks",
+          "verifyStatus",
+          "points",
+          "tags",
+          "flag",
+          "accountUrl"
+        ]
+      },
+      "account_user_update": {
+        "title": "account_user_update",
+        "type": "object",
+        "additionalProperties": false,
+        "x-examples": {
+          "example-1": {
+            "name": "testAcc",
+            "email": "test2@gmail.com",
+            "phone": 8989898989,
+            "location": "Boston",
+            "profileStatus": "Active",
+            "joinDate": "2021-12-04 16:39:45",
+            "verifyStatus": "Verified",
+            "accessLevel": "Admin",
+            "flag": 12,
+            "referredBy": "mark"
+          }
+        },
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "First name of the user"
+          },
+          "email": {
+            "type": "string",
+            "description": "Email id of the user"
+          },
+          "phone": {
+            "type": "number",
+            "description": "Phone number of the user"
+          },
+          "location": {
+            "type": "string",
+            "description": "Latitude and longitude of geolocation"
+          },
+          "profileStatus": {
+            "type": "string",
+            "description": "Profile status whether active/inactive"
+          },
+          "joinDate": {
+            "type": "string",
+            "description": "Profile joined date"
+          },
+          "verifyStatus": {
+            "type": "string",
+            "description": "Verification status verified/pending"
+          },
+          "accessLevel": {
+            "type": "string",
+            "description": "Access level of user "
+          },
+          "flag": {
+            "type": "number",
+            "description": "Flag value"
+          },
+          "referredBy": {
+            "type": "string",
+            "description": "Who reffered "
+          }
+        },
+        "required": [
+          "name",
+          "email",
+          "phone",
+          "location",
+          "profileStatus",
+          "joinDate",
+          "verifyStatus",
+          "accessLevel",
+          "flag",
+          "referredBy"
+        ]
+      },
+      "account_user_filter": {
+        "title": "account_user_filter",
+        "type": "object",
+        "additionalProperties": false,
+        "properties": {
+          "userCategory": {
+            "type": "array",
+            "description": "List of filter by options",
+            "items": {}
+          }
+        },
+        "required": [
+          "userCategory"
+        ],
+        "x-examples": {
+          "example-1": {
+            "userCategory": [
+              "Admins",
+              "Verified user",
+              "Ghosted user"
+            ]
+          }
+        }
+      },
+      "account_download_response": {
+        "title": "account_download_response",
+        "type": "object",
+        "additionalProperties": false,
+        "x-examples": {
+          "example-1": {
+            "response": {
+              "message": "CSV file downloaded"
+            }
+          }
+        },
+        "properties": {
+          "response": {
+            "type": "object",
+            "description": "File download success"
+          }
+        },
+        "required": [
+          "response"
+        ]
+      },
+      "navigation_actions_list": {
+        "title": "navigation_actions_list",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "platformAction": [
+              "Camera library",
+              "Camera Module",
+              "Text Post"
+            ],
+            "singleHighlights": [
+              {
+                "image": "image1",
+                "link": "Fuel Up"
+              },
+              {
+                "image": "image1",
+                "link": "Finance"
+              },
+              {
+                "image": "image1",
+                "link": "Daily Habits"
+              }
+            ],
+            "groupHighlights": [
+              {
+                "image": "image1",
+                "link": "Fuel Up"
+              },
+              {
+                "image": "image1",
+                "link": "Finance"
+              },
+              {
+                "image": "image1",
+                "link": "Daily Habits"
+              }
+            ],
+            "feature": [
+              {
+                "link": "channel",
+                "channel": "channel1",
+                "post": "post1"
+              },
+              {
+                "link": "channel",
+                "channel": "channel1",
+                "post": "post1"
+              },
+              {
+                "link": "channel",
+                "channel": "channel1",
+                "post": "post1"
+              }
+            ]
+          }
+        },
+        "properties": {
+          "platformAction": {
+            "type": "array",
+            "items": {}
+          },
+          "groupHighlights": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "image": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "singleHighlights": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "image": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "feature": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "channel": {
+                  "type": "string"
+                },
+                "link": {
+                  "type": "string"
+                },
+                "post": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "navigation_additem_request": {
+        "title": "navigation_additem_request",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "navigationType": "Top",
+            "title": "firstiTem",
+            "activeImageUrl": "imageurl",
+            "inactiveImageUrl": "imageurl",
+            "actionCategory": {
+              "category": "Feature",
+              "link": "challenges",
+              "channel": " ",
+              "post": " "
+            },
+            "targeting": {
+              "isEnabled": true,
+              "visibility": {
+                "showHide": "1",
+                "filter": "1",
+                "tags": [
+                  {
+                    "tagName": "Sports"
+                  },
+                  {
+                    "tagName": "Games"
+                  }
+                ]
+              },
+              "locked": {
+                "lock": "1",
+                "filter": "1",
+                "tags": [
+                  {
+                    "tagName": "Sports"
+                  },
+                  {
+                    "tagName": "Games"
+                  }
+                ]
+              },
+              "lockedMessage": "Messages",
+              "lockedActionCategory": {
+                "category": "Platform",
+                "link": "Camera Module",
+                "channel": " ",
+                "post": " "
+              }
+            }
+          }
+        },
+        "properties": {
+          "navigationType": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "activeImageUrl": {
+            "type": "string"
+          },
+          "inactiveImageUrl": {
+            "type": "string"
+          },
+          "actionCategory": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string"
+              },
+              "link": {
+                "type": "string"
+              },
+              "channel": {
+                "type": "string"
+              },
+              "post": {
+                "type": "string"
+              }
+            }
+          },
+          "targeting": {
+            "type": "object",
+            "properties": {
+              "isEnabled": {
+                "type": "boolean"
+              },
+              "visibility": {
+                "type": "object",
+                "properties": {
+                  "showHide": {
+                    "type": "string"
+                  },
+                  "filter": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "tagName": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "locked": {
+                "type": "object",
+                "properties": {
+                  "lock": {
+                    "type": "string"
+                  },
+                  "filter": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "tagName": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "lockedMessage": {
+                "type": "string"
+              },
+              "lockedActionCategory": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "type": "string"
+                  },
+                  "link": {
+                    "type": "string"
+                  },
+                  "channel": {
+                    "type": "string"
+                  },
+                  "post": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "navigation_updateitem_request": {
+        "title": "navigation_updateitem_request",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "navigationType": "Top",
+            "title": "firstiTem",
+            "activeImageUrl": "imageurl",
+            "inactiveImageUrl": "imageurl",
+            "actionCategory": {
+              "category": "Feature",
+              "link": "challenges",
+              "channel": " ",
+              "post": " "
+            },
+            "targeting": {
+              "isEnabled": true,
+              "visibility": {
+                "showHide": "1",
+                "filter": "1",
+                "tags": [
+                  {
+                    "tagName": "Sports"
+                  },
+                  {
+                    "tagName": "Games"
+                  }
+                ]
+              },
+              "locked": {
+                "lock": "1",
+                "filter": "1",
+                "tags": [
+                  {
+                    "tagName": "Sports"
+                  },
+                  {
+                    "tagName": "Games"
+                  }
+                ]
+              },
+              "lockedMessage": "Messages",
+              "lockedActionCategory": {
+                "category": "Platform",
+                "link": "Camera Module",
+                "channel": " ",
+                "post": " "
+              }
+            }
+          }
+        },
+        "properties": {
+          "navigationType": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "activeImageUrl": {
+            "type": "string"
+          },
+          "inactiveImageUrl": {
+            "type": "string"
+          },
+          "actionCategory": {
+            "type": "object",
+            "properties": {
+              "category": {
+                "type": "string"
+              },
+              "link": {
+                "type": "string"
+              },
+              "channel": {
+                "type": "string"
+              },
+              "post": {
+                "type": "string"
+              }
+            }
+          },
+          "targeting": {
+            "type": "object",
+            "properties": {
+              "isEnabled": {
+                "type": "boolean"
+              },
+              "visibility": {
+                "type": "object",
+                "properties": {
+                  "showHide": {
+                    "type": "string"
+                  },
+                  "filter": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "tagName": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "locked": {
+                "type": "object",
+                "properties": {
+                  "lock": {
+                    "type": "string"
+                  },
+                  "filter": {
+                    "type": "string"
+                  },
+                  "tags": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "tagName": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              "lockedMessage": {
+                "type": "string"
+              },
+              "lockedActionCategory": {
+                "type": "object",
+                "properties": {
+                  "category": {
+                    "type": "string"
+                  },
+                  "link": {
+                    "type": "string"
+                  },
+                  "channel": {
+                    "type": "string"
+                  },
+                  "post": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "isVisible": {
+            "type": "boolean"
+          },
+          "profileId": {
+            "type": "string"
+          }
+        }
+      },
+      "navigation_list_items": {
+        "title": "navigation_items",
+        "type": "object",
+        "description": "",
+        "x-examples": {
+          "example-1": {
+            "bottomNavigation": [
+              {
+                "id": 1101,
+                "title": "Media",
+                "activeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/1200px-Picture_icon_BLACK.svg.png",
+                "inactiveImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/1200px-Picture_icon_BLACK.svg.png",
+                "isVisible": false,
+                "actionCategory": {
+                  "category": "Platform Action",
+                  "link": "Gif Widget",
+                  "channel": "",
+                  "post": ""
+                },
+                "targeting": {
+                  "isEnabled": true,
+                  "visibility": {
+                    "showHide": "1",
+                    "filter": "2",
+                    "tags": [
+                      {
+                        "tagName": "Sports"
+                      }
+                    ]
+                  },
+                  "locked": {
+                    "lock": "2",
+                    "filter": "1",
+                    "tags": [
+                      {
+                        "tagName": "Sports"
+                      }
+                    ]
+                  },
+                  "lockedMessage": "fd",
+                  "lockedActionCategory": {
+                    "category": "Platform Action",
+                    "link": "Home",
+                    "channel": "",
+                    "post": ""
+                  }
+                }
+              },
+              {
+                "id": 1001,
+                "title": "Activity Wall",
+                "activeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/1200px-Picture_icon_BLACK.svg.png",
+                "inactiveImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/1200px-Picture_icon_BLACK.svg.png",
+                "isVisible": true,
+                "actionCategory": {
+                  "category": "Platform Action",
+                  "link": "Home",
+                  "channel": "",
+                  "post": ""
+                },
+                "targeting": {
+                  "isEnabled": true,
+                  "visibility": {
+                    "showHide": "1",
+                    "filter": "2",
+                    "tags": [
+                      {
+                        "tagName": "Sports"
+                      }
+                    ]
+                  },
+                  "locked": {
+                    "lock": "2",
+                    "filter": "1",
+                    "tags": [
+                      {
+                        "tagName": "Sports"
+                      }
+                    ]
+                  },
+                  "lockedMessage": "fd",
+                  "lockedActionCategory": {
+                    "category": "Platform Action",
+                    "link": "Home",
+                    "channel": "",
+                    "post": ""
+                  }
+                }
+              }
+            ],
+            "topNavigation": [
+              {
+                "id": 1,
+                "title": "FirstITem",
+                "activeImageUrl": "imageurl",
+                "inactiveImageUrl": "imageurl",
+                "isVisible": true,
+                "actionCategory": {
+                  "category": "Platform Action",
+                  "link": "Camera Module",
+                  "channel": "",
+                  "post": ""
+                },
+                "targeting": {
+                  "isEnabled": true,
+                  "visibility": {
+                    "showHide": "1",
+                    "filter": "2",
+                    "tags": [
+                      {
+                        "tagName": "Sports"
+                      }
+                    ]
+                  },
+                  "locked": {
+                    "lock": "2",
+                    "filter": "1",
+                    "tags": [
+                      {
+                        "tagName": "Sports"
+                      }
+                    ]
+                  },
+                  "lockedMessage": "fd",
+                  "lockedActionCategory": {
+                    "category": "Platform Action",
+                    "link": "Home",
+                    "channel": "",
+                    "post": ""
+                  }
+                }
+              }
+            ],
+            "bottomNavigationColors": {
+              "activeIconColor": "#0000",
+              "inactiveIconColor": "#ffff",
+              "backgroundColor": "#0000",
+              "alertColor": "#ffff"
+            },
+            "topNavigationColors": {
+              "foregroundColor": "dddds",
+              "backgroundColor": "cdads",
+              "alertColor": "sdsds"
+            }
+          }
+        },
+        "properties": {
+          "bottomNavigation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "activeImageUrl": {
+                  "type": "string"
+                },
+                "inactiveImageUrl": {
+                  "type": "string"
+                },
+                "actionCategory": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "type": "string"
+                    },
+                    "link": {
+                      "type": "string"
+                    },
+                    "channel": {
+                      "type": "string"
+                    },
+                    "post": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "isVisible": {
+                  "type": "boolean"
+                },
+                "targeting": {
+                  "type": "object",
+                  "properties": {
+                    "isEnabled": {
+                      "type": "boolean"
+                    },
+                    "visibility": {
+                      "type": "object",
+                      "properties": {
+                        "showHide": {
+                          "type": "string"
+                        },
+                        "filter": {
+                          "type": "string"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "tagName": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "locked": {
+                      "type": "object",
+                      "properties": {
+                        "lock": {
+                          "type": "string"
+                        },
+                        "filter": {
+                          "type": "string"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "tagName": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "lockedMessage": {
+                      "type": "string"
+                    },
+                    "lockedActionCategory": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string"
+                        },
+                        "link": {
+                          "type": "string"
+                        },
+                        "channel": {
+                          "type": "string"
+                        },
+                        "post": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "topNavigation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "activeImageUrl": {
+                  "type": "string"
+                },
+                "inactiveImageUrl": {
+                  "type": "string"
+                },
+                "actionCategory": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "type": "string"
+                    },
+                    "link": {
+                      "type": "string"
+                    },
+                    "channel": {
+                      "type": "string"
+                    },
+                    "post": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "isVisible": {
+                  "type": "boolean"
+                },
+                "targeting": {
+                  "type": "object",
+                  "properties": {
+                    "isEnabled": {
+                      "type": "boolean"
+                    },
+                    "visibility": {
+                      "type": "object",
+                      "properties": {
+                        "showHide": {
+                          "type": "string"
+                        },
+                        "filter": {
+                          "type": "string"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "tagName": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "locked": {
+                      "type": "object",
+                      "properties": {
+                        "lock": {
+                          "type": "string"
+                        },
+                        "filter": {
+                          "type": "string"
+                        },
+                        "tags": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "tagName": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "lockedMessage": {
+                      "type": "string"
+                    },
+                    "lockedActionCategory": {
+                      "type": "object",
+                      "properties": {
+                        "category": {
+                          "type": "string"
+                        },
+                        "link": {
+                          "type": "string"
+                        },
+                        "channel": {
+                          "type": "string"
+                        },
+                        "post": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "bottomNavigationColors": {
+            "type": "object",
+            "properties": {
+              "activeIconColor": {
+                "type": "string"
+              },
+              "inactiveIconColor": {
+                "type": "string"
+              },
+              "backgroundColor": {
+                "type": "string"
+              },
+              "alertColor": {
+                "type": "string"
+              }
+            }
+          },
+          "topNavigationColors": {
+            "type": "object",
+            "properties": {
+              "foregroundColor": {
+                "type": "string"
+              },
+              "backgroundColor": {
+                "type": "string"
+              },
+              "alertColor": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "navigation_save_items": {
+        "title": "navigation_save_items",
+        "type": "object",
+        "description": "",
+        "x-examples": {
+          "example-1": {
+            "bottomNavigation": [
+              {
+                "id": 701,
+                "title": "FirstITem",
+                "activeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/1200px-Picture_icon_BLACK.svg.png",
+                "inactiveImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/1200px-Picture_icon_BLACK.svg.png",
+                "actionCategory": {
+                  "category": "Platform Action",
+                  "link": "Camera Module",
+                  "channel": "",
+                  "post": ""
+                },
+                "isVisible": true
+              },
+              {
+                "id": 401,
+                "title": "ThirdITem",
+                "activeImageUrl": "imageurl",
+                "inactiveImageUrl": "imageurl",
+                "actionCategory": {
+                  "category": "Feature",
+                  "link": "challenge",
+                  "channel": "channel1",
+                  "post": "post"
+                },
+                "isVisible": true
+              },
+              {
+                "id": 501,
+                "title": "ThirdITem",
+                "activeImageUrl": "imageurl",
+                "inactiveImageUrl": "imageurl",
+                "actionCategory": {
+                  "category": "Feature",
+                  "link": "challenge",
+                  "channel": "channel1",
+                  "post": "post"
+                },
+                "isVisible": true
+              },
+              {
+                "id": 601,
+                "title": "FirstITem",
+                "activeImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/1200px-Picture_icon_BLACK.svg.png",
+                "inactiveImageUrl": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Picture_icon_BLACK.svg/1200px-Picture_icon_BLACK.svg.png",
+                "actionCategory": {
+                  "category": "Feature",
+                  "link": "challenge",
+                  "channel": "channel1",
+                  "post": "post"
+                },
+                "isVisible": true
+              }
+            ],
+            "topNavigation": [
+              {
+                "id": 1,
+                "title": "FirstITem",
+                "activeImageUrl": "imageurl",
+                "inactiveImageUrl": "imageurl",
+                "actionCategory": {
+                  "category": "Paltform",
+                  "link": "Camera Module",
+                  "channel": "",
+                  "post": ""
+                },
+                "isVisible": true
+              }
+            ],
+            "bottomNavigationColors": {
+              "activeIconColor": "cxdee",
+              "inactiveIconColor": "csfdf",
+              "backgroundColor": "cdads",
+              "alertColor": "sdsds"
+            },
+            "topNavigationColors": {
+              "foregroundColor": "dddds",
+              "backgroundColor": "cdads",
+              "alertColor": "sdsds"
+            }
+          }
+        },
+        "properties": {
+          "bottomNavigation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "activeImageUrl": {
+                  "type": "string"
+                },
+                "inactiveImageUrl": {
+                  "type": "string"
+                },
+                "actionCategory": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "type": "string"
+                    },
+                    "link": {
+                      "type": "string"
+                    },
+                    "channel": {
+                      "type": "string"
+                    },
+                    "post": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "isVisible": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "topNavigation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "activeImageUrl": {
+                  "type": "string"
+                },
+                "inactiveImageUrl": {
+                  "type": "string"
+                },
+                "actionCategory": {
+                  "type": "object",
+                  "properties": {
+                    "category": {
+                      "type": "string"
+                    },
+                    "link": {
+                      "type": "string"
+                    },
+                    "channel": {
+                      "type": "string"
+                    },
+                    "post": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "isVisible": {
+                  "type": "boolean"
+                }
+              }
+            }
+          },
+          "bottomNavigationColors": {
+            "type": "object",
+            "properties": {
+              "activeIconColor": {
+                "type": "string"
+              },
+              "inactiveIconColor": {
+                "type": "string"
+              },
+              "backgroundColor": {
+                "type": "string"
+              },
+              "alertColor": {
+                "type": "string"
+              }
+            }
+          },
+          "topNavigationColors": {
+            "type": "object",
+            "properties": {
+              "foregroundColor": {
+                "type": "string"
+              },
+              "backgroundColor": {
+                "type": "string"
+              },
+              "alertColor": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "appstore_details_model": {
+        "title": "appstore_request_model",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "appName": "App1",
+            "appSubtitle": "apptitle",
+            "shortDescription": "First app",
+            "appleKeywords": "first",
+            "appleUrl": "first app url",
+            "copyright": "copyright",
+            "website": "first app site",
+            "privacyPolicy": "policy content",
+            "promotionalText": "first app text",
+            "fullDescription": "decription for app",
+            "appleIcon": "image url",
+            "googleIcon": "image url",
+            "googleGraphic": "image url",
+            "appleScreenshot6": {
+              "imagesUrl": [
+                "image1",
+                "image2",
+                "image3"
+              ],
+              "videoUrl": "video url"
+            },
+            "appleScreenshot5": {
+              "imagesUrl": [
+                "image1",
+                "image2",
+                "image3",
+                "image4"
+              ],
+              "videoUrl": "video url"
+            },
+            "appleScreenshotIpad": {
+              "imagesUrl": [
+                "image1",
+                "image2",
+                "image3"
+              ],
+              "videoUrl": "video url"
+            },
+            "googleScreenshot": {
+              "imagesUrl": [
+                "image1",
+                "image2"
+              ],
+              "videoUrl": "video url"
+            }
+          }
+        },
+        "properties": {
+          "appName": {
+            "type": "string",
+            "description": "Name of the app"
+          },
+          "appSubtitle": {
+            "type": "string",
+            "description": "Subtitle of the apple app"
+          },
+          "shortDescription": {
+            "type": "string",
+            "description": "Short description for the app"
+          },
+          "appleKeywords": {
+            "type": "string",
+            "description": "Apple keywords"
+          },
+          "appleUrl": {
+            "type": "string",
+            "description": "Apple support url"
+          },
+          "copyright": {
+            "type": "string",
+            "description": "Apple copyright information"
+          },
+          "website": {
+            "type": "string",
+            "description": "Website url "
+          },
+          "privacyPolicy": {
+            "type": "string",
+            "description": "Privacy policy url"
+          },
+          "promotionalText": {
+            "type": "string",
+            "description": "Apple promotional text"
+          },
+          "fullDescription": {
+            "type": "string",
+            "description": "Apple & google full description 4000 characters"
+          },
+          "appleIcon": {
+            "type": "string",
+            "description": "Apple icon image"
+          },
+          "googleIcon": {
+            "type": "string",
+            "description": "Google icon image"
+          },
+          "googleGraphic": {
+            "type": "string",
+            "description": "Google feature graphic"
+          },
+          "appleScreenshot6": {
+            "type": "object",
+            "description": "Apple screenshot 6.5 ",
+            "properties": {
+              "imagesUrl": {
+                "type": "array",
+                "description": "Images 1 to 10",
+                "items": {}
+              },
+              "videoUrl": {
+                "type": "string",
+                "description": "Video url"
+              }
+            }
+          },
+          "appleScreenshot5": {
+            "type": "object",
+            "description": "Apple screenshot 5.5",
+            "properties": {
+              "imagesUrl": {
+                "type": "array",
+                "description": "Images 1 to 10",
+                "items": {}
+              },
+              "videoUrl": {
+                "type": "string",
+                "description": "Video url"
+              }
+            }
+          },
+          "appleScreenshotIpad": {
+            "type": "object",
+            "description": "Apple Screenshot for Ipad",
+            "properties": {
+              "imagesUrl": {
+                "type": "array",
+                "description": "Images 1 to 10",
+                "items": {}
+              },
+              "videoUrl": {
+                "type": "string",
+                "description": "Video url"
+              }
+            }
+          },
+          "googleScreenshot": {
+            "type": "object",
+            "description": "Google screenshot",
+            "properties": {
+              "imagesUrl": {
+                "type": "array",
+                "description": "Images 1 to 10",
+                "items": {}
+              },
+              "videoUrl": {
+                "type": "string",
+                "description": "Video url"
+              }
+            }
+          }
+        }
+      },
+      "appstore_image_request": {
+        "title": "app_image_request",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "imageType": "googleGraphic",
+            "imageUrl": "https://i.picsum.photos/id/338/1024/500.jpg?hmac=5vGZWLFtHNRX3kErq-AXGLliFDNiz8-cZXIiKw8Atco"
+          },
+          "example-2": {
+            "imageType": "favicon",
+            "imageUrl": "https://i.picsum.photos/id/338/1024/500.jpg?hmac=5vGZWLFtHNRX3kErq-AXGLliFDNiz8-cZXIiKw8Atco"
+          }
+        },
+        "properties": {
+          "imageType": {
+            "type": "string",
+            "description": "Image type"
+          },
+          "imageUrl": {
+            "type": "string",
+            "description": "Image url "
+          }
+        }
+      },
+      "appstore_video_request": {
+        "title": "appstore_video_request",
+        "type": "object",
+        "properties": {
+          "videoUrl": {
+            "type": "string"
+          }
+        },
+        "x-examples": {
+          "example-1": {
+            "videoUrl": "string"
+          }
+        }
+      },
+      "account_user_status": {
+        "title": "account_user_status",
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "status": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "navigation_publish_schedule": {
+        "title": "navigation_publish_schedule",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "scheduleTime": "12-30-2021"
+          }
+        },
+        "properties": {
+          "scheduleTime": {
+            "type": "string",
+            "description": "Schedule time for publish"
+          }
+        },
+        "required": [
+          "scheduleTime"
+        ]
+      },
+      "filters_get_data": {
+        "title": "filters_get_data",
+        "type": "object",
+        "x-tags": [
+          "Filters"
+        ],
+        "properties": {
+          "id": {
+            "type": "number"
+          },
+          "name": {
+            "type": "string"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "layoutSize": {
+            "type": "string"
+          },
+          "featureTo": {
+            "type": "string"
+          },
+          "haveAlgorithmic": {
+            "type": "boolean"
+          },
+          "algorithmName": {
+            "type": "string"
+          },
+          "withIn": {
+            "type": "string"
+          },
+          "userIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "tagIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "filters_users_data": {
+        "title": "filters_users_data",
+        "type": "array",
+        "x-tags": [
+          "Filters"
+        ],
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "number"
+            },
+            "name": {
+              "type": "string"
+            },
+            "showOrder": {
+              "type": "number"
+            },
+            "isActive": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "number"
+                  },
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "filters_users_payload": {
+        "title": "filters_users_payload",
+        "type": "array",
+        "x-tags": [
+          "Filters"
+        ],
+        "description": "",
+        "items": {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "showOrder": {
+              "type": "number"
+            },
+            "isActive": {
+              "type": "string"
+            },
+            "tags": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "acount_search_response": {
+        "type": "object",
+        "description": "",
+        "x-examples": {
+          "example-1": {
+            "total_count": 7,
+            "accounts": [
+              {
+                "id": 4,
+                "account_email": "mark@yopmail",
+                "phone_number": "9898989898",
+                "flag": 243,
+                "active_time": 30,
+                "first_name": "mark",
+                "account": "user",
+                "status": "ACTIVE"
+              }
+            ]
+          }
+        },
+        "properties": {
+          "total_count": {
+            "type": "number"
+          },
+          "accounts": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "account_email": {
+                  "type": "string"
+                },
+                "phone_number": {
+                  "type": "string"
+                },
+                "flag": {
+                  "type": "number"
+                },
+                "active_time": {
+                  "type": "number"
+                },
+                "first_name": {
+                  "type": "string"
+                },
+                "account": {
+                  "type": "string"
+                },
+                "status": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "required": [
+          "total_count",
+          "accounts"
+        ]
+      },
+      "appsetup_request_model": {
+        "title": "appsetup_request_model",
+        "type": "object",
+        "x-tags": [
+          "Appsetup"
+        ],
+        "x-examples": {
+          "example-1": {
+            "appName": "MyApp",
+            "colors": {
+              "lightMode": {
+                "primary": "#ff5433",
+                "secondary": "#ff5433",
+                "highlight": "#ff5433"
+              },
+              "darkMode": {
+                "primary": "#ff5433",
+                "secondary": "#ff5433",
+                "highlight": "#ff5433"
+              }
+            },
+            "receiverEmail": "support@myapp.com",
+            "defaultSubject": "Support on settings",
+            "appLogo": "logourl",
+            "favicon": "faviconUrl",
+            "mobileLogo": "mobilelogoUrl"
+          }
+        },
+        "properties": {
+          "appName": {
+            "type": "string",
+            "description": "Application Name"
+          },
+          "colors": {
+            "type": "object",
+            "description": "Colors for background",
+            "properties": {
+              "lightMode": {
+                "type": "object",
+                "properties": {
+                  "primary": {
+                    "type": "string"
+                  },
+                  "secondary": {
+                    "type": "string"
+                  },
+                  "highlight": {
+                    "type": "string"
+                  }
+                }
+              },
+              "darkMode": {
+                "type": "object",
+                "properties": {
+                  "primary": {
+                    "type": "string"
+                  },
+                  "secondary": {
+                    "type": "string"
+                  },
+                  "highlight": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          "receiverEmail": {
+            "type": "string",
+            "description": "Receivers's email for support"
+          },
+          "defaultSubject": {
+            "type": "string",
+            "description": "Default subject line"
+          },
+          "appLogo": {
+            "type": "string",
+            "description": "App logo"
+          },
+          "favicon": {
+            "type": "string",
+            "description": "Favicon image"
+          },
+          "mobileLogo": {
+            "type": "string",
+            "description": "Mobile App logo image"
+          }
+        }
+      },
+      "appsetup_response_model": {
+        "title": "appsetup_response_model",
+        "type": "array",
+        "x-tags": [
+          "Appsetup"
+        ],
+        "x-examples": {
+          "example-1": [
+            {
+              "appName": "MyApp",
+              "colors": {
+                "lightMode": {
+                  "primary": "#ff5433",
+                  "secondary": "#ff5433",
+                  "highlight": "#ff5433"
+                },
+                "darkMode": {
+                  "primary": "#ff5433",
+                  "secondary": "#ff5433",
+                  "highlight": "#ff5433"
+                }
+              },
+              "receiverEmail": "support@myapp.com",
+              "defaultSubject": "Support on settings",
+              "appLogo": "logourl",
+              "favicon": "faviconUrl",
+              "mobileLogo": "mobilelogoUrl"
+            }
+          ]
+        },
+        "items": {
+          "type": "object",
+          "properties": {
+            "appName": {
+              "type": "string",
+              "description": "Application Name"
+            },
+            "colors": {
+              "type": "object",
+              "description": "Colors for background",
+              "properties": {
+                "darkMode": {
+                  "type": "object",
+                  "properties": {
+                    "primary": {
+                      "type": "string"
+                    },
+                    "secondary": {
+                      "type": "string"
+                    },
+                    "highlight": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "lightMode": {
+                  "type": "object",
+                  "properties": {
+                    "primary": {
+                      "type": "string"
+                    },
+                    "secondary": {
+                      "type": "string"
+                    },
+                    "highlight": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "receiverEmail": {
+              "type": "string",
+              "description": "Receivers's email for support"
+            },
+            "defaultSubject": {
+              "type": "string",
+              "description": "Default subject line"
+            },
+            "appLogo": {
+              "type": "string",
+              "description": "App logo"
+            },
+            "favicon": {
+              "type": "string",
+              "description": "Favicon image"
+            },
+            "mobileLogo": {
+              "type": "string",
+              "description": "Mobile App logo image"
+            }
+          }
+        }
+      },
+      "account_bulk_update_payload": {
+        "description": "",
+        "type": "object",
+        "x-examples": {
+          "example-1": {
+            "id": [
+              0
+            ],
+            "status": "string"
+          }
+        },
+        "properties": {
+          "status": {
+            "type": "string"
+          },
+          "id": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "account_bulk_delete_payload": {
+        "title": "account_bulk_delete_payload",
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "array",
+            "items": {
+              "type": "number"
+            }
+          }
+        }
+      }
+    },
+    "securitySchemes": {
+      "BearerAuthentication": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Onboarding"
+    },
+    {
+      "name": "Account"
+    },
+    {
+      "name": "Navigation"
+    },
+    {
+      "name": "Appstore"
+    },
+    {
+      "name": "Filters"
+    },
+    {
+      "name": "Appsetup"
+    }
+  ]
+}

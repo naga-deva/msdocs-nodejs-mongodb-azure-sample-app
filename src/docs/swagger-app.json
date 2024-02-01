@@ -1,0 +1,474 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "description": "ClickiLink API",
+    "contact": {
+      "name": "Vigneswari K"
+    },
+    "title": "ClickiLink API",
+    "version": "1.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "Local Dev Server"
+    }
+  ],
+  "paths": {
+    "/api/app/auth/signup": {
+      "post": {
+        "summary": "Create a user profile",
+        "operationId": "userSignup",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/signup_success_response"
+                },
+                "examples": {
+                  "example-2": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Success",
+                      "displayMessage": "Signup Successfully",
+                      "messageCode": "SIGNUP_SUCCESS",
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/default_error_response"
+                }
+              }
+            }
+          }
+        },
+        "description": "To register the user\n",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/signup-request"
+              },
+              "examples": {
+                "Email": {
+                  "value": {
+                    "email": "sample123@yopmail.com",
+                    "phoneNumber": "8789034792",
+                    "userName": "Loreum",
+                    "fullName": "Ipsum",
+                    "roleName": "app_user",
+                    "password": "Password@123",
+                    "CountryCode": "+91",
+                    "dateOfBirth": "12.01.2010"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Authentication"
+        ]
+      },
+      "parameters": []
+    },
+    "/api/app/auth/login": {
+      "post": {
+        "operationId": "post-api-auth-email-login",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User Email Login",
+        "description": "To login the user using email",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/auth_email_login_request"
+              },
+              "examples": {
+                "example-1": {
+                  "value": {
+                    "email": "k.vigneswari2020@gmail.com",
+                    "password": "Password@123"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/default_success_response"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Success",
+                      "displayMessage": "Login Successfully",
+                      "messageCode": "LOGIN_SUCCESS",
+                      "payload": {
+                        "token": "Bearer eyJhbGciOiJIUzIhiiIsInR5cCI6IkpXVCJ9.eyJlbWFpbGQiOiJzZWVudXZhc2FuLm11dGhhaXlhbkBhdWd1c3RhaGl0ZWNoLmNvbSIsImlhdCI6MTY0MjcwNDQ3Mn0.yDrmAxtecIy-hbGV3o7mk5IOe5yEJ6zWf8d2n_3CTMA"
+                      },
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/default_error_response"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/app/auth/logout": {
+      "get": {
+        "operationId": "post-api-auth-logout",
+        "tags": [
+          "Authentication"
+        ],
+        "summary": "User Logout API",
+        "description": "To logout from device",
+        "security": [
+          {
+            "BearerAuthentication": []
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "200 response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/default_success_response"
+                },
+                "examples": {
+                  "example-1": {
+                    "value": {
+                      "statusCode": 200,
+                      "message": "Success",
+                      "displayMessage": "Success",
+                      "messageCode": "SUCCESS",
+                      "payload": {},
+                      "success": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/default_error_response"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "signup-request": {
+        "title": "create-signup-request",
+        "type": "object",
+        "description": "create-signup-request",
+        "x-examples": {
+          "example-1": {
+            "email": "k.vigneswari2020@gmail.com"
+          }
+        },
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "phone": {
+            "type": "string",
+            "example": "+919043898118"
+          },
+          "firstName": {
+            "type": "string",
+            "example": "Loreum"
+          },
+          "password": {
+            "type": "string",
+            "example": "Password@123"
+          },
+          "lastName": {
+            "type": "string",
+            "example": "ipsum"
+          },
+          "refferedBy": {
+            "type": "string",
+            "example": "22129"
+          },
+          "userRole": {
+            "type": "string",
+            "example": "agent"
+          }
+        },
+        "required": [
+          "signupType"
+        ]
+      },
+      "auth_email_login_request": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Email Login Request Model",
+        "x-examples": {
+          "example-1": {
+            "email": "k.vigneswari2020@gmail.com",
+            "password": "Password@123"
+          }
+        },
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "email",
+          "password"
+        ]
+      },
+      "auth_changepw_request": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "Change Password Request Model",
+        "x-examples": {
+          "example-1": {
+            "oldPassword": "Password@450",
+            "newPassword": "Password@123"
+          }
+        },
+        "properties": {
+          "oldPassword": {
+            "type": "string"
+          },
+          "newPassword": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "phone",
+          "otp"
+        ]
+      },
+      "auth_otp_login_request": {
+        "type": "object",
+        "additionalProperties": false,
+        "title": "OTP Login Request Model",
+        "x-examples": {
+          "example-1": {
+            "phone": "k.vigneswari2020@gmail.com",
+            "otp": "Password@123"
+          }
+        },
+        "properties": {
+          "phone": {
+            "type": "string"
+          },
+          "otp": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "phone",
+          "otp"
+        ]
+      },
+      "signup_success_response": {
+        "type": "object",
+        "title": "Sign Success Response Model",
+        "additionalProperties": false,
+        "description": "",
+        "x-examples": {},
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "This gives a whether the respose succeed or failed"
+          },
+          "messageCode": {
+            "description": "HTTP status code as per standard",
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "payload": {
+            "allOf": [
+              {}
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "statusCode",
+          "messageCode",
+          "displayMessage"
+        ]
+      },
+      "login_success_response": {
+        "type": "object",
+        "title": "Default success model",
+        "additionalProperties": false,
+        "description": "",
+        "x-examples": {},
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "This gives a whether the respose succeed or failed"
+          },
+          "messageCode": {
+            "description": "HTTP status code as per standard",
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "payload": {
+            "allOf": [
+              {}
+            ],
+            "type": "object"
+          }
+        },
+        "required": [
+          "statusCode",
+          "messageCode",
+          "displayMessage"
+        ]
+      },
+      "default_success_response": {
+        "type": "object",
+        "title": "Default success model",
+        "additionalProperties": false,
+        "description": "",
+        "x-examples": {},
+        "properties": {
+          "statusCode": {
+            "type": "number",
+            "description": "This gives a whether the respose succeed or failed"
+          },
+          "messageCode": {
+            "description": "HTTP status code as per standard",
+            "type": "string"
+          },
+          "success": {
+            "type": "boolean",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "payload": {
+            "allOf": [
+              {}
+            ],
+            "type": "object"
+          },
+          "error": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "statusCode",
+          "messageCode",
+          "displayMessage"
+        ]
+      },
+      "default_error_response": {
+        "type": "object",
+        "title": "Default Error Response Model",
+        "additionalProperties": false,
+        "x-examples": {
+          "example-1": {
+            "statusCode": 500,
+            "name": "Error",
+            "message": "ACCOUNT_DOES_NOT_EXIST",
+            "error": true,
+            "additionalInfo": "ACCOUNT_DOES_NOT_EXIST"
+          }
+        },
+        "properties": {
+          "statusCode": {
+            "description": "HTTP status code as per standard",
+            "type": "number"
+          },
+          "message": {
+            "type": "string",
+            "description": "Any success message"
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "Display message to frontend"
+          },
+          "error": {
+            "type": "boolean"
+          },
+          "payload": {
+            "allOf": []
+          }
+        },
+        "required": [
+          "statusCode"
+        ]
+      }
+    },
+    "securitySchemes": {
+      "BearerAuthentication": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "Authorization"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Authentication"
+    }
+  ]
+}

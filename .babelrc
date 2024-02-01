@@ -1,0 +1,28 @@
+{
+    "presets": [
+      ["@babel/preset-env", { "targets": { "node": "current" } }],
+      "@babel/preset-typescript"
+    ],
+    "plugins": [
+        [
+            "module-resolver",
+            {
+                "root": [
+                    "."
+                ],
+                "extenstions": [
+                    ".ts",
+                    ".json"
+                ],
+                "alias": {
+                    "@express-types": "./src/types/index.js",
+                    "@middlewares": "./src/middlewares/index.js",
+                    "@models": "./src/models/index.js",
+                    "@helpers": "./src/helpers",
+                    "@logger": "./src/helpers/logger/index.js",
+                    "@src": "./src"
+                }
+            }
+        ]
+    ]
+  }
